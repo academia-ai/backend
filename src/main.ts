@@ -3,21 +3,22 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as express from 'express';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: false,
   });
+  const configService = app.get(ConfigService);
+  const CLIENT_URL = configService.get<string>('CLIENT_URL');
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ limit: '10mb', extended: true }));
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: CLIENT_URL,
     credentials: true,
   });
 
-
   app.setGlobalPrefix('api/v1');
-
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -26,7 +27,6 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Scholar Ai Project API')
