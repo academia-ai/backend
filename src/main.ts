@@ -17,22 +17,15 @@ async function bootstrap() {
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-  const allowedOrigins = [
-    'https://frontend-eight-black-75.vercel.app', // production
-    'http://localhost:5173', // dev
-  ];
+  const env = configService.get<string>('NODE_ENV');
+
+  const corsOrigins =
+    env === 'production'
+      ? ['https://frontend-eight-black-75.vercel.app']
+      : ['http://localhost:5173', 'https://frontend-eight-black-75.vercel.app'];
 
   app.enableCors({
-    origin: (origin, callback) => {
-      // allow requests with no origin (like Postman)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: corsOrigins,
     credentials: true,
   });
 
