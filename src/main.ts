@@ -16,8 +16,23 @@ async function bootstrap() {
       : 'http://localhost:5173';
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+  const allowedOrigins = [
+    'https://frontend-eight-black-75.vercel.app', // production
+    'http://localhost:5173', // dev
+  ];
+
   app.enableCors({
-    origin: CLIENT_URL,
+    origin: (origin, callback) => {
+      // allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   });
 
