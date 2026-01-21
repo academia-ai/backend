@@ -15,10 +15,10 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // Global API prefix
+
   app.setGlobalPrefix('api/v1');
 
-  // Validation Pipes
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -27,7 +27,6 @@ async function bootstrap() {
     }),
   );
 
-  // Swagger configuration
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Scholar Ai Project API')
