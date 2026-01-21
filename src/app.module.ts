@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { v1Module } from './v1/v1.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { RedisModule } from './lib/redis/redis.module';
 
 @Module({
   imports: [
@@ -23,6 +24,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
     }),
 
     v1Module,
+
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

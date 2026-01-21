@@ -10,7 +10,10 @@ async function bootstrap() {
     bufferLogs: false,
   });
   const configService = app.get(ConfigService);
-  const CLIENT_URL = configService.get<string>('CLIENT_URL');
+  const CLIENT_URL =
+    configService.get<string>('NODE_ENV') === 'production'
+      ? configService.get<string>('CLIENT_URL')
+      : 'http://localhost:5173';
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ limit: '10mb', extended: true }));
   app.enableCors({
@@ -43,7 +46,7 @@ async function bootstrap() {
   const port = process.env.PORT ?? 3000;
   console.log('Port:', port);
   await app.listen(port);
-  console.log(`🚀 Server running on http://localhost:${port}`);
-  console.log(`📘 Swagger docs available at http://localhost:${port}/api-docs`);
+  console.log(`🚀 Server running on ${CLIENT_URL}`);
+  console.log(`📘 Swagger docs available at ${CLIENT_URL}/api-docs`);
 }
 bootstrap();
