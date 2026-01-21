@@ -53,6 +53,9 @@ importers:
       docx:
         specifier: ^9.5.1
         version: 9.5.1
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
       markdown-it:
         specifier: ^14.1.0
         version: 14.1.0
