@@ -8,6 +8,7 @@ export class RedisService implements OnModuleDestroy {
 
   constructor() {
     const redisUrl = process.env.REDIS_URL;
+    this.logger.log(`REDIS_URL at runtime: ${redisUrl}`);
 
     if (!redisUrl) {
       throw new Error('REDIS_URL is not defined in environment variables');
